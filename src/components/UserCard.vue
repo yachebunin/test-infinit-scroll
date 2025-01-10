@@ -14,13 +14,13 @@
 
 <script>
 /**
- * Компонент для отображения карточки пользователя (фото, имя, почта).
+ * A component that displays an individual user's photo, name, and email.
  */
 export default {
   name: 'UserCard',
   props: {
     /**
-     * Данные одного пользователя из RandomUser API
+     * An object from the RandomUser API representing the user data.
      */
     userData: {
       type: Object,
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     /**
-     * Полное имя пользователя (Имя + Фамилия).
+     * Returns the user's full name (first + last).
      * @returns {string}
      */
     fullName() {

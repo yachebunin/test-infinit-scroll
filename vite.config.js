@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
 /**
- * Конфигурация Vite.
+ * Vite configuration.
  */
 export default defineConfig({
   plugins: [vue()],

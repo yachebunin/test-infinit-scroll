@@ -10,7 +10,8 @@
       />
     </div>
 
-    <!-- Тут сделал триггер, при попадании в зону видимости гружу новую "порцию" -->
+    <!-- A sentinel (trigger) element. When it enters the viewport,
+         we load the next batch of users. -->
     <div ref="infiniteScrollTrigger" class="scroll-trigger">
       <p>Загружаю...</p>
     </div>
@@ -42,21 +43,21 @@ export default {
   setup() {
     /**
      * @type {import('vue').Ref<RandomUser[]>}
-     * Массив пользователей, загружаемых с API randomuser.me
+     * A reactive array of users from the RandomUser API
      */
     const users = ref([]);
 
     /**
      * @type {import('vue').Ref<HTMLElement|null>}
-     * Ссылка на элемент-триггер, который отслеживается Intersection Observer'ом
+     * A reference to the trigger element for the infinite scroll
      */
     const infiniteScrollTrigger = ref(null);
 
-    // Получаем метод для подгрузки новых пользователей из кастомного хука
+    // Destructure our custom composable to get the loadMoreUsers method
     const { loadMoreUsers } = useInfiniteScroll(users, infiniteScrollTrigger);
 
     /**
-     * Первая загрузка данных при монтировании.
+     * Initial data load when the component is mounted.
      */
     onMounted(() => {
       loadMoreUsers();

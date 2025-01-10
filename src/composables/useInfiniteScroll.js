@@ -1,29 +1,29 @@
 import { onMounted, onUnmounted } from 'vue';
 
 /**
- * Кастомный хук для реализации бесконечной прокрутки.
- * Использует IntersectionObserver для подгрузки новых данных,
- * когда элемент-триггер попадает в зону видимости.
+ * A custom hook for implementing infinite scroll.
+ * It uses IntersectionObserver to detect when the trigger element
+ * enters the viewport, then fetches the next batch of users.
  *
- * @param {import('vue').Ref<Array>} usersRef - Ссылка на массив пользователей
- * @param {import('vue').Ref<HTMLElement|null>} triggerRef - Ссылка на триггер-элемент
- * @returns {{ loadMoreUsers: Function }} Объект с методом "loadMoreUsers"
+ * @param {import('vue').Ref<Array>} usersRef - A ref holding the array of users
+ * @param {import('vue').Ref<HTMLElement|null>} triggerRef - A ref to the sentinel element
+ * @returns {{ loadMoreUsers: Function }} An object with the loadMoreUsers function
  */
 export default function useInfiniteScroll(usersRef, triggerRef) {
   /**
-   * Текущая страница для запроса к RandomUser API.
+   * Current page for the RandomUser API (used to demonstrate pagination).
    * @type {number}
    */
   let page = 1;
 
   /**
-   * Экземпляр IntersectionObserver.
+   * The IntersectionObserver instance (or null if not yet created).
    * @type {IntersectionObserver|null}
    */
   let observer = null;
 
   /**
-   * Загружаю новую порцию пользователей (по 20 за запрос)
+   * Fetches more users (20 per request) from the RandomUser API.
    * @returns {Promise<void>}
    */
   async function loadMoreUsers() {
@@ -32,24 +32,24 @@ export default function useInfiniteScroll(usersRef, triggerRef) {
 
     /**
      * @typedef {Response} FetchResponse
-     * @description Объект ответа от fetch(), который можно конвертировать в JSON.
+     * This is the raw response from fetch(), can be converted to JSON.
      */
     const response = await fetch(url);
 
     /**
      * @typedef {Object} RandomUserApiResponse
-     * @property {Array} results - Массив пользователей
+     * @property {Array} results - The array of user objects
      */
     /** @type {RandomUserApiResponse} */
     const data = await response.json();
 
-    // Добавляю новые записи к массиву (без полной перезаписи)
+    // Append new users without re-creating the entire array
     usersRef.value.push(...data.results);
   }
 
   /**
-   * Обработчик, вызываемый при пересечении триггер-элемента с viewport.
-   * Если элемент виден, загружаю следующую "партию" пользователей.
+   * Callback for IntersectionObserver. Loads more users if the
+   * sentinel element is in view.
    * @param {IntersectionObserverEntry[]} entries
    */
   function handleIntersection(entries) {
@@ -60,7 +60,7 @@ export default function useInfiniteScroll(usersRef, triggerRef) {
   }
 
   /**
-   * Инициализируем IntersectionObserver при монтировании.
+   * Initialize the IntersectionObserver when the component is mounted.
    */
   onMounted(() => {
     observer = new IntersectionObserver(handleIntersection, {
@@ -73,7 +73,7 @@ export default function useInfiniteScroll(usersRef, triggerRef) {
   });
 
   /**
-   * Отключаем IntersectionObserver при размонтировании.
+   * Clean up the IntersectionObserver when the component is unmounted.
    */
   onUnmounted(() => {
     if (observer && triggerRef.value) {

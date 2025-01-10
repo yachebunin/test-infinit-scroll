@@ -1,8 +1,8 @@
 /**
- * Глобальные стили для тестт приложения прокрутки
+ * Global styles for the application.
  */
 
-/* Сбрасываю базовые отступы */
+/* Reset margins and padding */
 * {
   margin: 0;
   padding: 0;
