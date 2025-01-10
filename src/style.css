@@ -1,0 +1,26 @@
+/**
+ * Глобальные стили для тестт приложения прокрутки
+ */
+
+/* Сбрасываю базовые отступы */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f0f0f0;
+  color: #333;
+  font-family: Arial, sans-serif;
+  overflow-y: scroll;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
